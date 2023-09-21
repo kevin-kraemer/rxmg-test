@@ -21,7 +21,7 @@ describe('posts', () => {
     newPostPage.elements.publishButton().should('be.visible')
   })
   
-  it.only('creates a new post', () => {
+  it('creates a new post', () => {
     const postTitle = chance.string({ alpha: true })
     const postSubject = chance.string({ alpha: true })
     const postBody = chance.string({ alpha: true })
@@ -43,5 +43,20 @@ describe('posts', () => {
       cy.contains(postTitle)
       cy.contains(postSubject)
     })
+  })
+  
+  it('deletes a post', () => {
+    const postTitle = chance.string({ alpha: true })
+    const postSubject = chance.string({ alpha: true })
+    const postBody = chance.string({ alpha: true })
+    
+    homePage.elements.newPostLink().click()
+    newPostPage.createPost(postTitle, postSubject, postBody)
+    
+    articlePage.elements.deleteArticleButton().click()
+    
+    cy.visit('/#/')
+    homePage.elements.globalFeed().click()
+    homePage.elements.articlePreviews().should('have.length.of.at.least', 2).and('not.contain', postTitle)
   })
 })
