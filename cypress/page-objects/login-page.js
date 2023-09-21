@@ -7,9 +7,9 @@ class loginPage {
   }
   
   login(email, password) {
-    this.elements.emailField.type(email)
-    this.elements.passwordField.type(password)
-    this.elements.signinButton.click()
+    this.elements.emailField().type(email)
+    this.elements.passwordField().type(password)
+    this.elements.signinButton().click()
   }
 }
 
