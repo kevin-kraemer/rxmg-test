@@ -6,10 +6,14 @@ import newPostPage from '../page-objects/new-post-page'
 const Chance = require('chance')
 const chance = new Chance()
 
+const testUsername = 'kkraemer'
+const testEmail = 'kkraemer@test.com'
+const testPassword = 'password'
+
 describe('posts', () => {
   beforeEach(() => {
     cy.visit('/#/login')
-    loginPage.login('kkraemer@test.com', 'password')
+    loginPage.login(testEmail, testPassword)
   })
 
   it('displays the new post page', () => {
@@ -32,14 +36,14 @@ describe('posts', () => {
     cy.url().should('contain', `/article/${postTitle.toLowerCase()}`)
     articlePage.elements.titleText().should('contain', postTitle)
     articlePage.elements.bodyText().should('contain', postBody)
-    articlePage.elements.authorLink().should('contain', 'kkraemer')
+    articlePage.elements.authorLink().should('contain', testUsername)
     articlePage.elements.editArticleButton().should('be.visible')
     articlePage.elements.deleteArticleButton().should('be.visible')
     
     cy.visit('/#/')
     homePage.elements.globalFeed().click()
     homePage.elements.articlePreviews().eq(0).within(() => {
-      cy.contains('kkraemer')
+      cy.contains(testUsername)
       cy.contains(postTitle)
       cy.contains(postSubject)
     })
